@@ -1,7 +1,7 @@
-# go-webapp-boilerplates
-Basic boilerplates for web applications with the backend written in Golang.
+# Beta Theta Pi Website
+## Delta Gamma Chapter
 
-## Database Branch
-This branch is the boilerplate for a basic web application that has a need for a database. The branch "master" contains the boilerplate with less packages/files that removes the database functionality from the boilerplate.
-
-This boilerplate uses [boltdb/bolt](https://www.github.com/boltdb/bolt) for its database storage and operations. The dependency is managed by the package [golang/dep](https://www.github.com/golang/dep).
+#### Stack
+__Backend__: [Go](https://www.golang.org/)
+__Database__: [Bolt](https://www.github.com/boltdb/bolt)
+__Frontend__: HTML/CSS & JS (w/Bootstrap and jQuery toolkits)
