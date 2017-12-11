@@ -1,9 +1,9 @@
 jQuery(document).ready(function(){
-    var auth = 0;
+    var en = 0;
     var landing = jQuery('.beta-landing');
     var content = jQuery('.beta-homepage-jumbotron');
 
-    if(auth == 0) {
+    if(en == 0) {
         var delay = 500;
 
         landing.find('span').each(function (i) {
