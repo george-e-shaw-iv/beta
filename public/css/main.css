@@ -22,7 +22,7 @@ p {
 
 .beta-homepage-jumbotron {
     display:none;
-    background-image:url(../img/background.jpg);
+    background-image:url(/static/img/background.jpg);
     background-repeat:no-repeat;
     background-position:center center;
     background-size:auto auto;

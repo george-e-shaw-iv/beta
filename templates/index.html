@@ -1,10 +1,12 @@
+{{ define "index" }}
+
 <!DOCTYPE html>
 <html lang="en" class="w-100 h-100">
   <head>
     <title>Beta Theta Pi - Delta Gamma Chapter</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link type="text/css" rel="stylesheet" href="css/main.css">
+    <link type="text/css" rel="stylesheet" href="/static/css/main.css">
   </head>
   <body class="w-100 h-100">
     <div class="container-full w-100 h-100 d-flex align-items-center justify-content-center beta-landing">
@@ -22,7 +24,7 @@
         <div class="container">
           <nav class="landing-nav navbar navbar-expand-lg navbar-light">
               <a class="navbar-brand" href="/">
-                  <img src="img/btp_color_identity.png" alt="Beta Theta Pi" class="img-fluid">
+                  <img src="/static/img/btp_color_identity.png" alt="Beta Theta Pi" class="img-fluid">
               </a>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#betaNav" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
@@ -83,13 +85,13 @@
 
             <div class="row mt-2">
                 <div class="col-12 col-md-4 mt-3">
-                    <img src="img/square.jpg" alt="Example" class="border border-white img-fluid">
+                    <img src="/static/img/square.jpg" alt="Example" class="border border-white img-fluid">
                 </div>
                 <div class="col-12 col-md-4 mt-3">
-                    <img src="img/square.jpg" alt="Example" class="border border-white img-fluid">
+                    <img src="/static/img/square.jpg" alt="Example" class="border border-white img-fluid">
                 </div>
                 <div class="col-12 col-md-4 mt-3">
-                    <img src="img/square.jpg" alt="Example" class="border border-white img-fluid">
+                    <img src="/static/img/square.jpg" alt="Example" class="border border-white img-fluid">
                 </div>
             </div>
 
@@ -124,7 +126,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="js/landing.js"></script>
+    <script type="text/javascript" src="/static/js/landing.js"></script>
     <!-- END JS -->
   </body>
 </html>
+
+{{ end }}
