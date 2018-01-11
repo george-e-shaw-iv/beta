@@ -25,7 +25,7 @@ p {
     background-image:url(/static/img/background.jpg);
     background-repeat:no-repeat;
     background-position:center center;
-    background-size:auto auto;
+    background-size:cover;
 }
 
 .beta-homepage-jumbotron h1 {
