@@ -1,0 +1,24 @@
+{{ define "content" }}
+
+    <div class="row pt-3">
+        <div class="col-12 d-flex align-items-center justify-content-center">
+            <h2>Login</h2>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+            <form class="loginForm border border-white">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" class="form-control" id="loginUsername" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-secondary">Login</button>
+            </form>
+        </div>
+    </div>
+
+{{ end }}

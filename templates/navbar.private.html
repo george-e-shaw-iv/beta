@@ -1,0 +1,64 @@
+{{ define "navbar" }}
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="/">
+        <img src="/static/img/btp_white_identity.png" alt="Beta Theta Pi" class="img-fluid d-none d-sm-inline">
+        <img src="/static/img/btp_white_identity_xs.png" alt="Beta Theta Pi" class="img-fluid d-inline d-sm-none">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#betaNav" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="betaNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="/information" id="informationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Information</a>
+                <div class="dropdown-menu" aria-labelledby="informationDropdown">
+                    <a class="dropdown-item" href="/information">About the Fraternity</a>
+                    <a class="dropdown-item" href="/information/join">How to Join</a>
+                    <a class="dropdown-item" href="/information/faq">FAQ</a>
+                    <div class="dropdown-divider"></div>
+                    <h6 class="text-muted pl-2 mb-1">Chapter Resources</h6>
+                    <a class="dropdown-item" href="#gradepdf">Grade Check Template</a>
+                    <a class="dropdown-item" href="/information/chapter-resources/kai-report">Electronic Kai Report</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="/articles" id="articlesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Articles</a>
+                <div class="dropdown-menu" aria-labelledby="articlesDropdown">
+                    <a class="dropdown-item" href="/articles">General</a>
+                    <a class="dropdown-item" href="/articles">Officer Reports</a>
+                    <a class="dropdown-item" href="/articles">State of the Chapter</a>
+                    <a class="dropdown-item" href="/articles">House Projects</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/calendar">Calendar</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="/members" id="membersDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Members</a>
+                <div class="dropdown-menu" aria-labelledby="membersDropdown">
+                    <a class="dropdown-item" href="/members">Current Members</a>
+                    <a class="dropdown-item" href="/members/executive-committee">Executive Committee</a>
+                    <a class="dropdown-item" href="/members/notable-alumni">Notable Alumni</a>
+                    <div class="dropdown-divider"></div>
+                    <h6 class="text-muted pl-2 mb-1">Active Members</h6>
+                    <a class="dropdown-item" href="/members/active">Dashboard</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#involvement" id="involvedDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Get Involved</a>
+                <div class="dropdown-menu" aria-labelledby="involvedDropdown">
+                    <a class="dropdown-item" href="/involvement/recruitment-referral">Recruitment Referral</a>
+                    <a class="dropdown-item" href="/involvement/anonymous-feedback">Anonymous Feedback</a>
+                    <a class="dropdown-item" href="/involvement/contact-us">Contact Us</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/give">Give</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+{{ end }}
