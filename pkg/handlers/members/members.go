@@ -1,9 +1,11 @@
 package members
 
 import (
-	"net/http"
-	"github.com/george-e-shaw-iv/beta/pkg/handlers"
 	"html/template"
+	"net/http"
+
+	"github.com/george-e-shaw-iv/beta/pkg/encryption"
+	"github.com/george-e-shaw-iv/beta/pkg/handlers"
 )
 
 func Dashboard(res http.ResponseWriter, req *http.Request) {
@@ -21,13 +23,29 @@ func Dashboard(res http.ResponseWriter, req *http.Request) {
 		"templates/members/active/index.private.html",
 	}
 
+	if req.Method == "POST" {
+		req.ParseForm()
+
+		if req.Form["username"][0] == "root" && req.Form["password"][0] == "root" {
+			c := http.Cookie{
+				Name:  "btp_active",
+				Value: encryption.RandomString(16),
+				Path:  "/",
+			}
+
+			http.SetCookie(res, &c)
+			tmp = template.Must(template.ParseFiles(priv...))
+			tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Dashboard"})
+		}
+	}
+
 	_, err := req.Cookie("btp_active")
 	if err != nil {
 		tmp = template.Must(template.ParseFiles(pub...))
-		tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title:"Login"})
+		tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Login"})
 		return
 	}
 
 	tmp = template.Must(template.ParseFiles(priv...))
-	tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title:"Dashboard"})
+	tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Dashboard"})
 }
