@@ -4,8 +4,11 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/george-e-shaw-iv/beta/pkg/encryption"
 	"github.com/george-e-shaw-iv/beta/pkg/handlers"
+	"github.com/george-e-shaw-iv/beta/pkg/database/models/user"
+	"strconv"
+	"strings"
+	"time"
 )
 
 func Dashboard(res http.ResponseWriter, req *http.Request) {
@@ -26,26 +29,89 @@ func Dashboard(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" {
 		req.ParseForm()
 
-		if req.Form["username"][0] == "root" && req.Form["password"][0] == "root" {
-			c := http.Cookie{
-				Name:  "btp_active",
-				Value: encryption.RandomString(16),
-				Path:  "/",
-			}
-
-			http.SetCookie(res, &c)
-			tmp = template.Must(template.ParseFiles(priv...))
-			tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Dashboard"})
+		roll, err := strconv.Atoi(req.Form["roll"][0])
+		if err != nil {
+			tmp = template.Must(template.ParseFiles(pub...))
+			tmp.ExecuteTemplate(res, "layout", handlers.PageData{
+				Title: "Login",
+				Message: "Error parsing roll number. Try again.",
+			})
+			return
 		}
+
+		u, err := user.Fetch(roll)
+		if err != nil {
+			tmp = template.Must(template.ParseFiles(pub...))
+			tmp.ExecuteTemplate(res, "layout", handlers.PageData{
+				Title: "Login",
+				Message: "Invalid roll number and/or password.",
+			})
+			return
+		}
+
+		err = u.Authenticate(req.Form["password"][0])
+		if err != nil {
+			tmp = template.Must(template.ParseFiles(pub...))
+			tmp.ExecuteTemplate(res, "layout", handlers.PageData{
+				Title: "Login",
+				Message: "Invalid roll number and/or password.",
+			})
+			return
+		}
+
+		http.SetCookie(res, &http.Cookie{
+			Name: "btp_active",
+			Value: strconv.Itoa(u.Roll)+":"+u.Secret,
+			Path: "/",
+		})
+
+		tmp = template.Must(template.ParseFiles(priv...))
+		tmp.ExecuteTemplate(res, "layout", handlers.PageData{
+			Title: "Dashboard",
+			Message: "You've logged in successfully, welcome back " + u.FirstName + ".",
+			ExternalData: u,
+		})
+		return
 	}
 
-	_, err := req.Cookie("btp_active")
+	cookie, err := req.Cookie("btp_active")
 	if err != nil {
 		tmp = template.Must(template.ParseFiles(pub...))
 		tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Login"})
 		return
 	}
 
+	val := strings.Split(cookie.Value, ":")
+	if len(val) != 2 {
+		http.SetCookie(res, &http.Cookie{Name: "btp_active", Expires: time.Unix(0, 0)})
+		tmp = template.Must(template.ParseFiles(pub...))
+		tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Login"})
+		return
+	}
+
+	roll, err := strconv.Atoi(val[0])
+	if err != nil {
+		http.SetCookie(res, &http.Cookie{Name: "btp_active", Expires: time.Unix(0, 0)})
+		tmp = template.Must(template.ParseFiles(pub...))
+		tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Login"})
+		return
+	}
+
+	u, err := user.Fetch(roll)
+	if err != nil {
+		http.SetCookie(res, &http.Cookie{Name: "btp_active", Expires: time.Unix(0, 0)})
+		tmp = template.Must(template.ParseFiles(pub...))
+		tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Login"})
+		return
+	}
+
+	if u.Secret != val[1] {
+		http.SetCookie(res, &http.Cookie{Name: "btp_active", Expires: time.Unix(0, 0)})
+		tmp = template.Must(template.ParseFiles(pub...))
+		tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Login"})
+		return
+	}
+
 	tmp = template.Must(template.ParseFiles(priv...))
-	tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Dashboard"})
+	tmp.ExecuteTemplate(res, "layout", handlers.PageData{Title: "Dashboard", ExternalData: u})
 }

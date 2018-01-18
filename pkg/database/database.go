@@ -18,7 +18,7 @@ const (
 // the Open function in the Update part that makes sure all top
 // level buckets exist.
 const (
-	BUCKET_TEST = "test"
+	BUCKET_USERS = "users"
 )
 
 // Error codes
@@ -47,7 +47,7 @@ func Open(filepath string) (*Datastore, error) {
 
 	// Ensure that all top-level buckets exist (bucket constants)
 	err = ds.handle.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists([]byte(BUCKET_TEST))
+		_, err := tx.CreateBucketIfNotExists([]byte(BUCKET_USERS))
 
 		if err != nil {
 			return err
@@ -98,6 +98,23 @@ func (ds *Datastore) Put(bucket string, key []byte, value interface{}) error {
 	return ds.handle.Update(func(tx *bolt.Tx) error {
 		return tx.Bucket([]byte(bucket)).Put(key, dsValue)
 	})
+}
+
+func (ds *Datastore) Count(bucket string) (int, error) {
+	c := 0
+
+	ds.handle.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(bucket))
+
+		b.ForEach(func(_, _ []byte) error {
+			c++
+			return nil
+		})
+
+		return nil
+	})
+
+	return c, nil
 }
 
 // Delete is a function attached to the Datastore struct that will delete data from the current bolt instance
