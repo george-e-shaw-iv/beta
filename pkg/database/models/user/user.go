@@ -1,21 +1,22 @@
 package user
 
 import (
-	"github.com/george-e-shaw-iv/beta/pkg/database"
-	"strconv"
-	"github.com/george-e-shaw-iv/beta/pkg/encryption"
 	"errors"
+	"strconv"
+
+	"github.com/george-e-shaw-iv/beta/pkg/database"
+	"github.com/george-e-shaw-iv/beta/pkg/encryption"
 )
 
 type User struct {
-	Roll int
-	FirstName string
+	Roll       int
+	FirstName  string
 	MiddleName string
-	LastName string
-	Suffix string
-	Positions string
-	password string
-	Secret string
+	LastName   string
+	Suffix     string
+	Positions  string
+	password   []byte
+	Secret     string
 }
 
 func init() {
@@ -26,21 +27,22 @@ func init() {
 	defer db.Close()
 
 	if count, _ := db.Count(database.BUCKET_USERS); count == 0 {
-		p, err := encryption.HashPassword("password")
+		initUser := User{
+			Roll:       1,
+			FirstName:  "John",
+			MiddleName: "Riley",
+			LastName:   "Knox",
+			Suffix:     "",
+			Positions:  "admin,member",
+			Secret:     "",
+		}
+
+		initUser.password, err = encryption.HashPassword([]byte("root"))
 		if err != nil {
 			panic("Error inserting default user")
 		}
 
-		err = db.Put(database.BUCKET_USERS, []byte("1"), User{
-			Roll: 1,
-			FirstName: "John",
-			MiddleName: "Riley",
-			LastName: "Knox",
-			Suffix: "",
-			Positions: "admin,member",
-			password: p,
-			Secret: "",
-		})
+		err = db.Put(database.BUCKET_USERS, []byte("1"), initUser)
 
 		if err != nil {
 			panic("Error inserting default user")
@@ -80,10 +82,10 @@ func New(u User) error {
 	return nil
 }
 
-func (u *User) Authenticate(password string) error {
-	err := encryption.CheckPassword([]byte(u.password), []byte(password))
+func (u *User) Authenticate(password []byte) error {
+	err := encryption.CheckPassword(u.password, password)
 	if err != nil {
-		return errors.New("unable to authenticate user")
+		return errors.New(string(u.password))
 	}
 
 	return u.setSecret(encryption.RandomString(16))

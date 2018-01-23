@@ -21,9 +21,9 @@ func RandomString(length int) string {
 	return string(b)
 }
 
-func HashPassword(password string) (string, error) {
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	return string(hash), err
+func HashPassword(password []byte) ([]byte, error) {
+	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+	return hash, err
 }
 
 func CheckPassword(hash, plainText []byte) error {

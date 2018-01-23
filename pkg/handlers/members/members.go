@@ -4,11 +4,12 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/george-e-shaw-iv/beta/pkg/handlers"
-	"github.com/george-e-shaw-iv/beta/pkg/database/models/user"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/george-e-shaw-iv/beta/pkg/database/models/user"
+	"github.com/george-e-shaw-iv/beta/pkg/handlers"
 )
 
 func Dashboard(res http.ResponseWriter, req *http.Request) {
@@ -33,7 +34,7 @@ func Dashboard(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			tmp = template.Must(template.ParseFiles(pub...))
 			tmp.ExecuteTemplate(res, "layout", handlers.PageData{
-				Title: "Login",
+				Title:   "Login",
 				Message: "Error parsing roll number. Try again.",
 			})
 			return
@@ -43,32 +44,32 @@ func Dashboard(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			tmp = template.Must(template.ParseFiles(pub...))
 			tmp.ExecuteTemplate(res, "layout", handlers.PageData{
-				Title: "Login",
+				Title:   "Login",
 				Message: "Invalid roll number and/or password.",
 			})
 			return
 		}
 
-		err = u.Authenticate(req.Form["password"][0])
+		err = u.Authenticate([]byte(req.Form["password"][0]))
 		if err != nil {
 			tmp = template.Must(template.ParseFiles(pub...))
 			tmp.ExecuteTemplate(res, "layout", handlers.PageData{
-				Title: "Login",
-				Message: "Invalid roll number and/or password.",
+				Title:   "Login",
+				Message: "Invalid roll number and/or password. " + err.Error(),
 			})
 			return
 		}
 
 		http.SetCookie(res, &http.Cookie{
-			Name: "btp_active",
-			Value: strconv.Itoa(u.Roll)+":"+u.Secret,
-			Path: "/",
+			Name:  "btp_active",
+			Value: strconv.Itoa(u.Roll) + ":" + u.Secret,
+			Path:  "/",
 		})
 
 		tmp = template.Must(template.ParseFiles(priv...))
 		tmp.ExecuteTemplate(res, "layout", handlers.PageData{
-			Title: "Dashboard",
-			Message: "You've logged in successfully, welcome back " + u.FirstName + ".",
+			Title:        "Dashboard",
+			Message:      "You've logged in successfully, welcome back " + u.FirstName + ".",
 			ExternalData: u,
 		})
 		return
