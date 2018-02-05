@@ -14,8 +14,8 @@ type User struct {
 	MiddleName string
 	LastName   string
 	Suffix     string
-	Positions  string
-	password   []byte
+	Positions  []string
+	Password   []byte
 	Secret     string
 }
 
@@ -33,11 +33,11 @@ func init() {
 			MiddleName: "Riley",
 			LastName:   "Knox",
 			Suffix:     "",
-			Positions:  "admin,member",
+			Positions:  []string{"admin", "member"},
 			Secret:     "",
 		}
 
-		initUser.password, err = encryption.HashPassword([]byte("root"))
+		initUser.Password, err = encryption.HashPassword([]byte("root"))
 		if err != nil {
 			panic("Error inserting default user")
 		}
@@ -83,9 +83,9 @@ func New(u User) error {
 }
 
 func (u *User) Authenticate(password []byte) error {
-	err := encryption.CheckPassword(u.password, password)
+	err := encryption.CheckPassword(u.Password, password)
 	if err != nil {
-		return errors.New(string(u.password))
+		return errors.New("unable to authenticate user")
 	}
 
 	return u.setSecret(encryption.RandomString(16))

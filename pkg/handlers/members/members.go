@@ -55,7 +55,7 @@ func Dashboard(res http.ResponseWriter, req *http.Request) {
 			tmp = template.Must(template.ParseFiles(pub...))
 			tmp.ExecuteTemplate(res, "layout", handlers.PageData{
 				Title:   "Login",
-				Message: "Invalid roll number and/or password. " + err.Error(),
+				Message: "Invalid roll number and/or password.",
 			})
 			return
 		}

@@ -17,3 +17,6 @@ beta
 
 # Goland
 .idea/
+
+# Boltdb
+*.db
